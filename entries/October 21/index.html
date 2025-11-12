@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Title</title>
+    <style>
+        .date-container {
+            height: auto;
+            width: auto;
+            padding: 5px;
+        }
+        .roll-container {
+            height: 20px;
+            width: 200px;
+            padding: 5px;
+            margin-left: 5px;
+            display: flex;
+            border-radius: 5px;
+            border: 1px solid black;
+        }
+        .month {
+            width: 70px;
+            justify-content: center;
+            text-align: fixed;
+            vertical-align: center;
+            margin-right: 5px;
+            align-content: center;
+          /*  background-color: rgba(0,0,0,0.1);*/
+        }
+        .day {
+            width: 20px;
+            opacity: 100%;
+            vertical-align: center;
+            margin-right:5px;
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+            /*background-color: grey;
+            background-color: rgba(0,0,0,0.1); */
+        }
+        .year {
+            opacity: 100%;
+            margin-right: 5px;
+            /*background-color: rgba(0,0,0,0.1); */
+        }
+         .buttons {
+            border: 0.5px solid black;
+            border-radius: 5px;
+            background: rgba(0,0,0,0.1);
+            align-items: center;
+            margin-left: 5px;
+            margin-right: 5px;
+            text-align: center;
+            justify-content: center;
+            vertical-align: center;
+            text-align:center;
+            padding-left: 3px;
+            padding-right: 3px;
+        }
+         .button-container {
+            height: 20px;
+            width: 200px;
+            padding: 5px;
+            margin-left: 5px;
+            position: relative;
+            display: flex;
+            border-radius: 5px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your content goes here -->
+    <h1>Personal Information</h1>
+    <div "full name" > Full Name: <br>
+        <input type="text" placeholder="Name" style=" margin-left: 10px; border: 0.5px solid black; border-radius: 5px; height: 30px; background: rgba(0,0,0,0.1);"> </input>
+    </div>
+    <br>
+    <div "date" > BirthDay:
+        <div class="date-container" id="master">
+        <div id="date" class="roll-container" onClick="manageState()">
+            <div id="day" class="day">
+                0
+            </div>
+            
+            <div id="month" class="month">
+                January
+            </div>
+            
+            <div id="year" class="year">
+                0000
+            </div>
+            <div id="arrow" style="margin-left: 40px;">
+                🠋
+            </div>
+        </div>
+    </div>
+    </div>
+    <br>
+    <div "Gender " > Gender: <br>
+        <input type="text" placeholder="Gender" style="margin-left: 10px; border: 0.5px solid black; border-radius: 5px; height: 30px; background: rgba(0,0,0,0.1);"> </input>
+    </div>
+    <br>
+    <div "discord "> Discord: <br>
+        <input type="text" placeholder="Username" style="margin-left: 10px; border: 0.5px solid black; border-radius: 5px; height: 30px; background: rgba(0,0,0,0.1);"> </input>
+    </div>
+    <br>
+    <button style="justify-content: center">submit</button>
+</body>
+<script>
+let isActive = false;
+let container;
+let dayText;
+let monthText;
+let yearText;
+let faster;
+let reset;
+let select;
+let start;
+function manageState() {
+    if(isActive) {
+        selectDate();
+        document.getElementById("arrow").innerHTML = `🠋`;
+        start.removeEventListener("click", starter);
+        document.getElementById("buttonsThing").remove();
+        isActive= false;
+        
+    } else {
+        document.getElementById("master").innerHTML += 
+        `<div class="button-container" id="buttonsThing">
+                <div id="faster" class = "buttons">
+                     up
+                </div>
+                <div id="reset" class="buttons">
+                    reset
+                </div>
+                <div id="select" class="buttons">
+                    select
+                </div>
+                <div id="start" class="buttons">
+                    start
+                </div>
+            </div>`;
+          container = document.getElementById("date");
+          dayText = document.getElementById("day");
+          monthText = document.getElementById("month");
+          yearText = document.getElementById("year");
+          faster = document.getElementById("faster");
+          reset = document.getElementById("reset");
+          select = document.getElementById("select");
+          start = document.getElementById("start");
+        document.getElementById("arrow").innerHTML = `🠉`;
+        reseter();
+        isActive = true;
+    }
+}
+    let monthIndex = 0;
+    let monthKeys = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    let months = {
+    'January': 31,
+    'February': 28,
+    'March': 31,
+    'April': 30,
+    'May': 31,
+    'June': 30,
+    'July': 31,
+    'August': 31,
+    'September': 30,
+    'October': 31,
+    'November': 30,
+    'December': 31
+}
+    function increment(unit) {
+       // console.log("unit: ", unit);
+        //console.log("id passed: " + unit.id);
+        //day logic
+        switch (unit.id) {
+            case dayText.id:
+                unit.innerHTML = `${parseInt(unit.innerHTML) + 1}`;
+                break;
+            case yearText.id: 
+                //gets raw number
+                let curYear= parseInt(unit.innerHTML) + 1;
+                console.log(curYear)
+                //curYear.toString().length also makes sure to cut off any bloat when it gets length
+                let text = curYear < 1000 ? "0".repeat(4 - curYear.toString().length) + curYear.toString() : curYear.toString();
+                console.log(text)
+                unit.innerHTML = `${text}`;
+                break;
+            case monthText.id:
+                if(monthIndex === 12) {
+                    monthIndex = 0;
+                }
+                console.log(monthIndex);
+                unit.innerHTML = `${monthKeys[monthIndex]}`;
+                break;
+        }
+    }
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+/*function checkLeapYear() {
+    if(year % 4 !== 0 || year === 0;) {
+        return false;
+    } else if(year >= 100 && 
+            ((year % 100 != 0) || 
+            ((year % 100 == 0) && (year % 400 == 0)) {
+        return true;
+    }
+}*/
+function addYear() {
+    increment(yearText);   
+}
+let Picked = false;
+function reseter() {
+    speed = 4000;
+    dayText.innerHTML = `0`;
+    monthText.innerHTML = `January`;
+    yearText.innerHTML = `0000`;
+    faster.removeEventListener('click', addYear);
+    select.removeEventListener('click', selectDate);
+    start.addEventListener("click", starter);
+    Picked = true;
+}
+let startStatus = false;
+function selectDate() {
+    Picked = true;
+    faster.removeEventListener("click", addYear);
+    select.removeEventListener("click", selectDate);
+    start.removeEventListener("click", starter);
+}
+async function starter(){
+        faster.addEventListener("click", addYear);
+        select.addEventListener("click", selectDate);
+        reset.addEventListener("click", reseter);
+        start.removeEventListener("click", starter);
+        Picked = false;
+        while(!Picked) {
+            for(let curMonth of monthKeys) {
+                for(let i =0; i < months[curMonth]; i++) {
+                    if(Picked) return;
+                    increment(dayText);
+                    await sleep(10);
+                 //   console.log("fire");
+                }
+                dayText.innerHTML = `0`;
+                
+                monthIndex++;
+                console.log("passing this: ");
+                increment(monthText);
+               // console.log("next");
+            }
+            increment(yearText);
+            //console.log("thing");
+           // Picked = true;
+    }
+    console.log("thing");
+}
+
+</script>
+</html>
